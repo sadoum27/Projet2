@@ -1,13 +1,27 @@
 #!/bin/bash
-# Script pour compter le nombre de fichiers dans un répertoire
-# Usage : ./count_files.sh [nom_du_dossier]
-if [ -z "$1" ]; then
-    echo "Veuillez spécifier un répertoire."
+
+# Script: count_files.sh
+# Description: Compte le nombre de fichiers dans un répertoire spécifié
+# Utilisation: ./count_files.sh [répertoire]
+
+# Vérifier si l'argument du répertoire est fourni
+if [ $# -eq 0 ]; then
+    echo "Utilisation: $0 <répertoire>"
     exit 1
 fi
-if [ ! -d "$1" ]; then
-    echo "Le répertoire $1 n'existe pas."
+
+directory="$1"
+
+# Vérifier si le répertoire existe
+if [ ! -d "$directory" ]; then
+    echo "Erreur: '$directory' n'est pas un répertoire ou n'existe pas."
     exit 1
 fi
-file_count=$(ls -1 "$1" | wc -l)
-echo "Le dossier $1 contient $file_count fichier(s)."
+
+# Compter uniquement les fichiers (pas les répertoires) dans le répertoire spécifié
+file_count=$(ls -la "$directory" | grep -v '^d' | grep -v '^total' | wc -l)
+
+# Afficher le résultat
+echo "Le dossier $directory contient $file_count fichier(s)."
+
+exit 0
